@@ -51,28 +51,18 @@ def collect_dataset(dataset, target_tok_count, dataset_name, text_field = 'text'
         remaining_ntokens = target_tok_count - curr_tok_count
 
         if ntokens >= remaining_ntokens:
-            # We need only part of this document.
-            token_ids = tokenizer.encode_ordinary(text)     # encode it to know n tokens 
-            token_ids = token_ids[:remaining_ntokens]   # take only the first n_tokens till the remaining
-
-            text = tokenizer.decode(token_ids)  # decode it back to text
-
-            documents.append(text)      # append it to the documents list
-            curr_tok_count += remaining_ntokens     
-
-            progress.update(remaining_ntokens)
             break
-        else:
-            documents.append(text)      # just append doesnt matter because it is not more than remaining tokens
+        
+        documents.append(text)      # just append doesnt matter because it is not more than remaining tokens
 
-            curr_tok_count += ntokens
+        curr_tok_count += ntokens
 
-            progress.update(ntokens)        # add to the loading 
+        progress.update(ntokens)        # add to the loading 
 
-        progress.close()
-        print(f'{dataset_name}: Current Token Count: {curr_tok_count} tokens')
+    progress.close()
+    print(f'{dataset_name}: Current Token Count: {curr_tok_count} tokens')
 
-        return documents
+    return documents
 
 def main():
 
