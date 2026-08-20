@@ -52,7 +52,7 @@ def collect_dataset(dataset, target_tok_count, dataset_name, text_field = 'text'
 
         if ntokens >= remaining_ntokens:
             break
-        
+
         documents.append(text)      # just append doesnt matter because it is not more than remaining tokens
 
         curr_tok_count += ntokens
@@ -65,9 +65,10 @@ def collect_dataset(dataset, target_tok_count, dataset_name, text_field = 'text'
     return documents
 
 def main():
-
+    print("Creating directory if it doesnt exist...")
     path_to_data.mkdir(exist_ok=True)
 
+    print("Loading fineweb dataset...")
     #region load datasets
     fineweb = load_dataset(     # load the 10b token dataset
         "HuggingFaceFW/fineweb",
@@ -83,6 +84,7 @@ def main():
         dataset_name="FineWeb",
     )
 
+    print("Loading wikipedia dataset...")
     wikipedia = load_dataset(
         "wikimedia/wikipedia",
         "20231101.en",
@@ -96,6 +98,7 @@ def main():
         dataset_name="Wikipedia",
     )
 
+    print("Loading tinystories dataset...")
     tinystories = load_dataset(
         "roneneldan/TinyStories",
         split="train",
@@ -115,7 +118,7 @@ def main():
     # now shuffle them 
     random.shuffle(documents)   # type:ignore
 
-    with open(output_file, 'w') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
 
         for document in tqdm(documents, desc = 'Writing in the text file'):
             f.write(document)
