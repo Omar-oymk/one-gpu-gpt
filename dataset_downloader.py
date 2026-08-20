@@ -122,7 +122,7 @@ def main():
 
         for document in tqdm(documents, desc = 'Writing in the text file'):
             f.write(document)
-            f.write('\n\n')
+            f.write('<|endoftext|>\n')   # this is the special token that will be used to separate documents
 
 
 if __name__ == '__main__':
