@@ -220,4 +220,6 @@ __marimo__/
 # ignore data folder
 /data
 
+# ignore images folder
+/images
 # ./V0/models
