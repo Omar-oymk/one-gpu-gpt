@@ -7,3 +7,4 @@ This is the question that I asked myself when I was trying to train a GPT model 
 ## Goal 
 The goal of this project is to train multiple GPT models
 from scratch on a single GPU, Understand how they work, and what are their internal mechanisms. Then each time applying a more advanced modern technique to improve the model's quality and performance within the constraints of a single GPU.
+<img align="right" src="images\final laptop version.png" width="360" height="360">
