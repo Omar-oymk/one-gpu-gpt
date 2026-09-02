@@ -34,3 +34,15 @@ def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenize
         tokenIDs = torch.cat((tokenIDs, next_tokID), dim = 1)
 
     return tokenIDs
+
+def text_to_tokenIDs(text, tokenizer):
+    encoded = tokenizer.encode(text, allowed_special = {'<|endoftext|>'})
+    encoded = torch.tensor(encoded).unsqueeze(0)
+
+    return encoded
+
+def tokenIDs_to_text(tokIDs, tokenizer):
+    decoded = tokenizer.decode(list(tokIDs.squeeze(0)))
+
+    return decoded
+
