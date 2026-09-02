@@ -10,7 +10,7 @@ def print_model_size(model):
 
     print(f"The model has {total_params:,} total parameters")
     print(f'The model is {model_size_MB:.2f}MB')
-    print(f'Approximately {model_size_GB / 1024:.2f}GB')
+    print(f'Approximately {model_size_GB:.2f}GB')
 
 
 def load_text_data(path = Path().cwd().parents[1] / 'data' / 'train_data.txt'):
