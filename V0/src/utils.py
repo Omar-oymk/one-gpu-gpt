@@ -45,4 +45,3 @@ def tokenIDs_to_text(tokIDs, tokenizer):
     decoded = tokenizer.decode(list(tokIDs.squeeze(0)))
 
     return decoded
-

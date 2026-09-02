@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from gelu import GELU
+from src.gelu import GELU
 
 class FeedForwardNetwork(nn.Module):
     def __init__(self, din, expanding_factor = 4):

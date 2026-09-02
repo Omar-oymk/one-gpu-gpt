@@ -1,9 +1,9 @@
 import torch
 from torch import nn
 
-from multihead import MultiHeadAttention
-from layernorm import LayerNorm
-from feedforward import FeedForwardNetwork
+from src.multihead import MultiHeadAttention
+from src.layernorm import LayerNorm
+from src.feedforward import FeedForwardNetwork
 
 class TransformerBlock(nn.Module):
     def __init__(self, din, context_length, n_heads, expanding_factor, multihead_dropout, dropout):

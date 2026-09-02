@@ -1,8 +1,8 @@
 import torch
 from torch import nn
 
-from transformer import TransformerBlock
-from layernorm import LayerNorm
+from src.transformer import TransformerBlock
+from src.layernorm import LayerNorm
 
 
 class GPT8TModel(nn.Module):
