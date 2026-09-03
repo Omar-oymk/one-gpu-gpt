@@ -6,7 +6,6 @@ sys.path.insert(0, str(ROOT))
 
 import torch
 from torch.utils.data import Dataset
-
 class GPTV0Dataset(Dataset):
     def __init__(self, text, max_window_length, tokenizer, stride):
         self.input_ids = []
