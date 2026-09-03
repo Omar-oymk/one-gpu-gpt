@@ -46,6 +46,6 @@ class GPTV1Dataset(Dataset):
         # for input and target lists
         # so instead of counting it fr
         # we will instead return a list of range() that would "mimic" the behaviour of a real length of an existing list
-        return range(0,
+        return len(range(0,
                      len(self.tokenized_text) - self.max_window_length,
-                     self.stride)
+                     self.stride))
