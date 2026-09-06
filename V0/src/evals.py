@@ -1,6 +1,6 @@
 import torch
 
-from V0.src.utils import generate_text_tokIDs, text_to_tokenIDs, text_to_tokenIDs, tokenIDs_to_text
+from src.utils import generate_text_tokIDs, text_to_tokenIDs, text_to_tokenIDs, tokenIDs_to_text
 
 
 def calc_loss_batch(model, input_batch, target_batch, device, criterion):
