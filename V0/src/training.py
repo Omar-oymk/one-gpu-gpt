@@ -3,7 +3,7 @@ import torch
 from src.checkpointing import load_checkpoint, save_checkpoint
 from src.evals import calc_loss_batch, calc_loss_loader, evaluate_model, generate_and_print_sample
 
-def train_modelV1(model, optimizer, criterion, train_loader, val_loader, epochs, 
+def train_modelV0(model, optimizer, criterion, train_loader, val_loader, epochs, 
                 start_context, num_batches_to_eval, eval_freq, max_new_tokens, device,
                 checkpoint_path, tokenizer, context_length):
     """

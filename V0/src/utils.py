@@ -45,3 +45,7 @@ def tokenIDs_to_text(tokIDs, tokenizer):
     decoded = tokenizer.decode(list(tokIDs.squeeze(0)))
 
     return decoded
+
+def count_tokens(text_data, tokenizer):
+    tokens = tokenizer.encode(text_data, allowed_special = {"<|endoftext|>"})
+    return len(tokens)
