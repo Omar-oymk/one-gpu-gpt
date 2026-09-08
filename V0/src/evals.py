@@ -1,3 +1,5 @@
+import math
+
 import torch
 
 from src.utils import generate_text_tokIDs, text_to_tokenIDs, text_to_tokenIDs, tokenIDs_to_text
@@ -59,9 +61,9 @@ def calc_loss_loader(model, data_loader, device, criterion, num_batches):
             break
         loss = calc_loss_batch(model, input_batch, target_batch, device, criterion)
         total_loss += loss.item() 
-        avg_loss = total_loss / num_batches
-
-        perplexity += torch.exp(avg_loss).item()
+        
+    avg_loss = total_loss / num_batches
+    perplexity = math.exp(avg_loss)
     
     return avg_loss, perplexity  # return average loss and perplexity across the batches
 
