@@ -49,8 +49,44 @@ def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenize
 # to have a near accuracy so that the multinomial can kind of find different and generate different words
 # lastly we can use the top - k sampling to choose which top k values to keep and remove the rest with -inf
 # the idea here is to reduce the risk of generating an incoherent irrelivent word due to multinomial + temperature scaling
-def generate_text_tokIDs_advanced():
-    pass
+def generate_text_tokIDs_advanced(model, idx, device, eos_id, max_new_tokens, context_size, temperature = 0.0, topk = None):
+    idx = idx.to(device)
+
+    for i in range(max_new_tokens):
+        idx = idx[:, -context_size:]
+
+        next_token_id = model(idx)[:, -1, :]
+
+        if topk is not None:
+            top_logits, top_indices = torch.topk(next_token_id, topk, dim = -1)
+            # then we need to know the threshold to do so we get the least logit in the top_logits
+            min_logit = top_logits[:, -1]       # all batches, last logit
+
+            next_token_id = torch.where(
+                # condition here 
+                next_token_id < min_logit,
+                # what to replace them with
+                torch.tensor(float('-inf')).to(device),
+                next_token_id
+            )
+
+        # if there is a temperature
+        if temperature > 0.0:
+            next_token_id /= temperature
+            probs = torch.softmax(next_token_id, dim = -1)
+            tok_id = torch.multinomial(probs, num_samples= 1)
+
+        else:
+            tok_id = torch.argmax(probs, dim = -1, keepdim= True)
+
+
+        if tok_id == eos_id:
+            break
+
+        idx = torch.cat((idx, tok_id), dim = -1)
+
+    return idx
+
 
 def text_to_tokenIDs(text, tokenizer):
     encoded = tokenizer.encode(text, allowed_special = {'<|endoftext|>'})
