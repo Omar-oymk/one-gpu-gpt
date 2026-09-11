@@ -19,6 +19,9 @@ def load_text_data(path = Path().cwd().parents[1] / 'data' / 'train_data.txt'):
 
     return raw_text
 
+
+# the greedy decoding approach where u just take the tokenid with highest prob 
+# the problem with it is it is determministic and overall non humane
 def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenizer):
     for _ in range(max_new_tokens):
         context_idx = tokenIDs[:, -context_size:]
@@ -34,6 +37,20 @@ def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenize
         tokenIDs = torch.cat((tokenIDs, next_tokID), dim = 1)
 
     return tokenIDs
+
+# now the idea the updated version with better decoding is
+# firstly we use the multinomial instead of argmax
+# what it does is it generates a sample using that probabilitiy
+# it is like instead of picking the one with highest probability directly
+# u throw a die knowing that for example there is a 60% chance of getting a 6 for example 
+# another thing to do is to use temperature scaling
+# what it does is it kinda modifies the outputs of the softmax by dividing the logits by a constant "T"
+# this + multinomial will help make the more common sense words or similar meanings aka for example the top predictions
+# to have a near accuracy so that the multinomial can kind of find different and generate different words
+# lastly we can use the top - k sampling to choose which top k values to keep and remove the rest with -inf
+# the idea here is to reduce the risk of generating an incoherent irrelivent word due to multinomial + temperature scaling
+def generate_text_tokIDs_advanced():
+    pass
 
 def text_to_tokenIDs(text, tokenizer):
     encoded = tokenizer.encode(text, allowed_special = {'<|endoftext|>'})
