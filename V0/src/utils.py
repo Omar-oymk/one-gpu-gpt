@@ -32,7 +32,7 @@ def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenize
         logits = logits[:, -1, :]   # take only the last token
         probas = torch.softmax(logits, dim = -1)
         next_tokID = probas.argmax(dim = -1, keepdim=True)
-        if (next_tokID == tokenizer.eot_token).any():
+        if (next_tokID.item() == tokenizer.eot_token).any():
             break
         tokenIDs = torch.cat((tokenIDs, next_tokID), dim = 1)
 
@@ -60,13 +60,13 @@ def generate_text_tokIDs_advanced(model, idx, device, eos_id, max_new_tokens, co
         if topk is not None:
             top_logits, top_indices = torch.topk(next_token_id, topk, dim = -1)
             # then we need to know the threshold to do so we get the least logit in the top_logits
-            min_logit = top_logits[:, -1]       # all batches, last logit
+            min_logit = top_logits[:, -1].unsqueeze(-1)       # all batches, last logit
 
             next_token_id = torch.where(
                 # condition here 
                 next_token_id < min_logit,
                 # what to replace them with
-                torch.tensor(float('-inf')).to(device),
+                float('-inf'),
                 next_token_id
             )
 
@@ -80,7 +80,7 @@ def generate_text_tokIDs_advanced(model, idx, device, eos_id, max_new_tokens, co
             tok_id = torch.argmax(probs, dim = -1, keepdim= True)
 
 
-        if tok_id == eos_id:
+        if tok_id.item() == eos_id:
             break
 
         idx = torch.cat((idx, tok_id), dim = -1)
