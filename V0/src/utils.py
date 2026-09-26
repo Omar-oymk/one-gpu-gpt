@@ -32,7 +32,7 @@ def generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_size, tokenize
         logits = logits[:, -1, :]   # take only the last token
         probas = torch.softmax(logits, dim = -1)
         next_tokID = probas.argmax(dim = -1, keepdim=True)
-        if (next_tokID.item() == tokenizer.eot_token).any():
+        if next_tokID.item() == tokenizer.eot_token:
             break
         tokenIDs = torch.cat((tokenIDs, next_tokID), dim = 1)
 
@@ -77,7 +77,7 @@ def generate_text_tokIDs_advanced(model, idx, device, eos_id, max_new_tokens, co
             tok_id = torch.multinomial(probs, num_samples= 1)
 
         else:
-            tok_id = torch.argmax(probs, dim = -1, keepdim= True)
+            tok_id = torch.argmax(next_token_id, dim = -1, keepdim= True)
 
 
         if tok_id.item() == eos_id:

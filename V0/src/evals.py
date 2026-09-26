@@ -2,7 +2,7 @@ import math
 
 import torch
 
-from src.utils import generate_text_tokIDs, text_to_tokenIDs, text_to_tokenIDs, tokenIDs_to_text
+from src.utils import generate_text_tokIDs, text_to_tokenIDs, text_to_tokenIDs, tokenIDs_to_text, generate_text_tokIDs_advanced
 
 
 def calc_loss_batch(model, input_batch, target_batch, device, criterion):
@@ -83,6 +83,25 @@ def generate_and_print_sample(model, tokenizer, device, start_context, max_new_t
 
     model.eval()
     generated_tokIDs = generate_text_tokIDs(model, tokenIDs, max_new_tokens, context_length, tokenizer)
+    generated_text = tokenIDs_to_text(generated_tokIDs, tokenizer)
+    print(f"Generated text: {generated_text}")
+    model.train()
+
+def generate_and_print_sample_advanced(model, tokenizer, device, start_context, max_new_tokens, context_length, temperature = 0.0, topk = None):
+    tokenIDs = text_to_tokenIDs(start_context, tokenizer)
+    tokenIDs = tokenIDs.to(device)
+
+    model.eval()
+    generated_tokIDs = generate_text_tokIDs_advanced(
+        model, 
+        tokenIDs, 
+        device, 
+        tokenizer.eot_token, 
+        max_new_tokens, 
+        context_length, 
+        temperature, 
+        topk
+    )
     generated_text = tokenIDs_to_text(generated_tokIDs, tokenizer)
     print(f"Generated text: {generated_text}")
     model.train()
